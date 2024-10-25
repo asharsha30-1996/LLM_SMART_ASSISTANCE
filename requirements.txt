@@ -6,3 +6,8 @@ PyPDF2
 faiss-cpu
 langchain_google_genai
 langchain-community
+google-search-results
+google-auth-oauthlib
+openai
+langchain_openai
+gpt4all
