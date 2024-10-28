@@ -10,4 +10,5 @@ google-search-results
 google-auth-oauthlib
 openai
 langchain_openai
-gpt4all
+langchain-google-community
+dateparser
