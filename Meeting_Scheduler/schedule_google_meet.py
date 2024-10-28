@@ -73,7 +73,7 @@ def get_free_slots_for_day(date):
 
     return free_slots
 
-# LLM-powered command parsing function
+# Adjusting prompt to levarage LLM to get the task done (This is curated so that it worked for most of the tasks)
 def parse_llm_command(command):
     tz = pytz.timezone('America/Chicago')
 
