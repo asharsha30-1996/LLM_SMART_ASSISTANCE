@@ -185,8 +185,8 @@ Hope I summarized the contents related to the applications and now we shall look
 
 3. Then the particular application will be opened on streamlit.
 4. If you are planning to run this project, ensure installing all packages as specified in requirements.txt.
-5. Streamlit is not supported in the lates 3.12.0 and anything less than this version no problem.
-6. I used FAISS instead of ChromaDB as I could not install successfully in older versions of Pyhton <12.0.
+5. Streamlit is not supported in the latest python version 3.12.0 and anything less than this version encountered no problem.
+6. I used FAISS instead of ChromaDB as I could not install successfully in older versions of Python <12.0.
 
 Please share feedback for further improbvement and this is my first time learning of this RAG and Langchain use cases.
 
