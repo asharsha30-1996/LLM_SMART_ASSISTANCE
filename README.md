@@ -17,7 +17,7 @@ Note: Also planning to host the working of the above cases in the streamlit glob
 
 Now let us look at the steps of each of the above use cases:
 
-**1. Reading multiple PDF documents and summarizing the results.**
+# 1. Reading multiple PDF documents and summarizing the results.
 
 Users here can upload multiple PDF documents. There is a limit of 200MB per file while uploading. The text from these PDFs are split into smaller chunks using **RecursiveCharacterTextSplitter**. Further, we use **FAISS vector indexes** using OpenAI’s embeddings to store the processed text for fast similarity search.
 We require user to interact with the system after uploading the PDF which might include asking relevant questions from any one of the PDFs, so we use **OpenAI's GPT-3.5 Turbo**. Interestingly, given the cost I tried with Gemini Pro but I ran into couple of issues that the resources exhausted despite trying only for fewer times. In this aspect, OpenAI's APIs are more stable in this aspect. Lastly, for the user to interact with the system seamlessly, the entire workflow is deployed in the streamlit local.
@@ -33,7 +33,7 @@ This screenshot contains the result.
 <img width="925" alt="image" src="https://github.com/user-attachments/assets/01153342-f157-44ab-99ae-7334cbe9516c">
 
 
-**2. Searching the web for real-time information.**
+# 2. Searching the web for real-time information.
 
 This Streamlit-based Dynamic Search Agent app integrates **OpenAI GPT-3.5, Google Custom Search Engine (CSE), and SerpAPI** to provide real-time search results based on user queries. The agent decides dynamically which search tool to use, enhancing the efficiency and relevance of results.
 
@@ -75,7 +75,7 @@ Backend Chain of Thoughts:
 
 <img width="689" alt="image" src="https://github.com/user-attachments/assets/30d3737b-6f36-4753-b756-e3356766d16b">
 
-**3.Scheduling meetings.**
+# 3.Scheduling meetings.
 
 This is personally and by far the toughest of all parts due to certain issues like 1. Handling natural language response from the user 2. Check for potential conflicts
 3. Proper parsing of dates and certain date oriented words like today, next week, after two weeks etc....I felt prompting, parsing dates and extracting date oriented words and process them accurately to be more difficult.
@@ -136,7 +136,7 @@ Given in the prompt to handle all possible date oriented words like 'next monday
 **Note: We never exposed the tokens to openAI we used openAI only for prompting.**
 
 
-**4.Drafting and sending emails to recipients:**
+# 4.Drafting and sending emails to recipients:
 
 This Streamlit-based Email Drafting App integrates LangChain, Gmail API, and OpenAI GPT-3.5 to help users generate and manage email drafts through natural language input.
 
@@ -164,7 +164,7 @@ On my Gmail:
 
 **Note: We never exposed the tokens to openAI we used openAI only for prompting.**
 
-**5.Deploying a local LLM to store private information for future retrieval.**
+# 5.Deploying a local LLM to store private information for future retrieval.
 
 This is more like making use of local LLMs like ollama to store and retrieve personal information. Used sqlite3 as a DB to store information and later retrieved information using ollam's local llama 3.1 B model to interact with the information shared.
 
@@ -176,7 +176,7 @@ Below is the sample screenshot of the output. Also the local model took longer t
 
 Hope I summarized the contents related to the applications and now we shall look at the steps to execute the same
 
-**Part-2**
+# Part-2
 
 1. Activate .venv by .venv\Scripts\activate after specifying the proper path of the code execution. Note that all installations are done on virtual environment.
 2. Run the main.py which acts as a first stage user interface where the user will be prompted to select the type of application to run as shown below:
@@ -186,11 +186,11 @@ Hope I summarized the contents related to the applications and now we shall look
 3. Then the particular application will be opened on streamlit.
 4. If you are planning to run this project, ensure installing all packages as specified in requirements.txt.
 5. Streamlit is not supported in the lates 3.12.0 and anything less than this version no problem.
-6. For no reason I am not able to resolve ChromaBD installation issue, so used FAISS instead of its place.
+6. I used FAISS instead of ChromaDB as I could not install successfully in older versions of Pyhton <12.0.
 
 Please share feedback for further improbvement and this is my first time learning of this RAG and Langchain use cases.
 
-**References**
+# References:
 
 1. https://youtu.be/uus5eLz6smA?si=HyTYXVDheuUNJYoV - Multiple PDFs
 2. https://medium.com/@gk_/chatgpt-and-langchain-an-attempt-at-scheduling-automation-part-2-of-3-6e38b3c086d5 - For meeting Schedule
