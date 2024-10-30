@@ -1,6 +1,6 @@
 This Readme is classified into two parts: First Part is the general intro of the project and the second part is about running the application.
 
-**Part-1**
+# Part-1
 
 This was developed as part of a course assignment. **LLM_SMART_ASSISTANCE** is a series of simple applications that offer a variety of functionalities, including:
 
