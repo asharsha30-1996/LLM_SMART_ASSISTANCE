@@ -99,10 +99,115 @@ However we used Natural Language way of processing the text like if the user spe
 Below there are three pairs of screenshots of demo featuring from Streamlit UI and Google Calendar Interface. The demo are categorized into three types:
 
   1.  To schedule meeting during the conflict. To find if we get the pop out for the "Conflicts"
-  2.  To a proper meeting with well defined input prompt containing meeting name, start time, end time and date
+  2.  To schedule a proper meeting with well defined input prompt containing meeting name, start time, end time and date
   3.  Try creating meeting with user natural language to test if the prompt is able to identify the details
 
-For each of these screenshots above we might have 
+For each of these screenshots above we also have my Google Calendar to show the changes that are getting reflected:
+
+**Demo1: To schedule meeting during the conflict.**
+
+<img width="794" alt="image" src="https://github.com/user-attachments/assets/d770a077-84d7-4d73-9534-0d5c0ecbd771">
+
+**Created Meeting on conflicts:**
+
+<img width="365" alt="image" src="https://github.com/user-attachments/assets/124bfbd1-b1f7-4b96-b2e1-9e8ce9ee1058">
+
+**Google Calendar:**
+
+<img width="655" alt="image" src="https://github.com/user-attachments/assets/d6bda079-0f4c-4b55-a51a-26e0c87f91d0">
+
+**Demo2: To schedule a proper meeting with well defined input prompt containing meeting name, start time, end time and date.**
+
+<img width="484" alt="image" src="https://github.com/user-attachments/assets/cae8a90e-18c5-4d2c-961d-b1fd76b3851a">
+
+**Changes Reflected on Google Calendar**
+<img width="595" alt="image" src="https://github.com/user-attachments/assets/b176cb47-deb8-411a-9f03-580695d9b6ed">
+
+**Demo3: Try creating meeting with user natural language to test if the prompt is able to identify the details.**
+
+<img width="416" alt="image" src="https://github.com/user-attachments/assets/64452623-81dd-4e13-946b-4d3ba5d81d82">
+
+**Changes Reflected on Google Calendar**
+
+<img width="744" alt="image" src="https://github.com/user-attachments/assets/af00ab6c-34be-4232-89bd-a073c27291a0">
+
+Given in the prompt to handle all possible date oriented words like 'next monday, next friday, next week, next month etc' (as per testing they are working fine)
+
+**Note: We never exposed the tokens to openAI we used openAI only for prompting.**
+
+
+**4.Drafting and sending emails to recipients:**
+
+This Streamlit-based Email Drafting App integrates LangChain, Gmail API, and OpenAI GPT-3.5 to help users generate and manage email drafts through natural language input.
+
+The setup of auth remains the same as that of meeting usecase discussed above:
+
+The Langchain configuration contains **GPT-3.5** with deterministic responses (temperature=0) for consistent output. Hosted locally through Streamlit.
+
+Below is the screenshot of demo
+
+**Preparing the Draft of the email**
+
+<img width="427" alt="image" src="https://github.com/user-attachments/assets/628dbc6d-20eb-48c9-80f9-4e7958628b36">
+
+On my Gmail:
+
+<img width="371" alt="image" src="https://github.com/user-attachments/assets/697f0c23-7164-465a-a1c4-20447d7bd5d1">
+
+**Now send the email from the interaction box itself. Like the one below:**
+
+<img width="338" alt="image" src="https://github.com/user-attachments/assets/f4bb4a82-57c2-4904-86d0-a543b7efc334">
+
+**On the Gmail of the Recipient:**
+
+<img width="719" alt="image" src="https://github.com/user-attachments/assets/e028c194-63f3-44d4-85e0-4af823e1d5a5">
+
+**Note: We never exposed the tokens to openAI we used openAI only for prompting.**
+
+**5.Deploying a local LLM to store private information for future retrieval.**
+
+This is more like making use of local LLMs like ollama to store and retrieve personal information. Used sqlite3 as a DB to store information and later retrieved information using ollam's local llama 3.1 B model to interact with the information shared.
+
+Below is the sample screenshot of the output. Also the local model took longer time to run and my system is fronzen for 15 minutes.
+
+<img width="274" alt="image" src="https://github.com/user-attachments/assets/f7f29081-3bda-47d1-933f-3e8542628f14">
+<img width="323" alt="image" src="https://github.com/user-attachments/assets/acafecdc-0c42-4856-b611-c01ed17c152d">
+<img width="368" alt="image" src="https://github.com/user-attachments/assets/ff62421e-c8cd-4d42-b1aa-afacf62010fd">
+
+Hope I summarized the contents related to the applications and now we shall look at the steps to execute the same
+
+**Part-2**
+
+1. Activate .venv by .venv\Scripts\activate after specifying the proper path of the code execution. Note that all installations are done on virtual environment.
+2. Run the main.py which acts as a first stage user interface where the user will be prompted to select the type of application to run as shown below:
+
+<img width="413" alt="image" src="https://github.com/user-attachments/assets/f5230155-4c7a-467e-a0ce-aa116a9169bc">
+
+3. Then the particular application will be opened on streamlit.
+4. If you are planning to run this project, ensure installing all packages as specified in requirements.txt.
+5. Streamlit is not supported in the lates 3.12.0 and anything less than this version no problem.
+6. For no reason I am not able to resolve ChromaBD installation issue, so used FAISS instead of its place.
+
+Please share feedback for further improbvement and this is my first time learning of this RAG and Langchain use cases.
+
+**References**
+
+1. https://youtu.be/uus5eLz6smA?si=HyTYXVDheuUNJYoV - Multiple PDFs
+2. https://medium.com/@gk_/chatgpt-and-langchain-an-attempt-at-scheduling-automation-part-2-of-3-6e38b3c086d5 - For meeting Schedule
+3. https://youtu.be/Jq9Sf68ozk0?si=spinx0Lzkr2Hoz7i - For email Agent
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
