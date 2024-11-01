@@ -133,7 +133,8 @@ For each of these screenshots above we also have my Google Calendar to show the 
 
 Given in the prompt to handle all possible date oriented words like 'next monday, next friday, next week, next month etc' (as per testing they are working fine)
 
-**Note: We never exposed the tokens to openAI we used openAI only for prompting.**
+**Note: Never exposed the tokens to openAI we used openAI only for prompting. Also I set the working business hour 9AM to 6PM for this use case any time outside this time is discarded**
+
 
 
 # 4.Drafting and sending emails to recipients:
@@ -164,6 +165,8 @@ On my Gmail:
 
 **Note: We never exposed the tokens to openAI we used openAI only for prompting.**
 
+**Note:** The recepient details are stored as contact.json file and is contained in local
+
 # 5.Deploying a local LLM to store private information for future retrieval.
 
 This is more like making use of local LLMs like ollama to store and retrieve personal information. Used sqlite3 as a DB to store information and later retrieved information using ollam's local llama 3.1 B model to interact with the information shared.
@@ -176,7 +179,7 @@ Below is the sample screenshot of the output. Also the local model took longer t
 
 Hope I summarized the contents related to the applications and now we shall look at the steps to execute the same
 
-# Part-2
+# Part-2 Older Version
 
 1. Activate .venv by .venv\Scripts\activate after specifying the proper path of the code execution. Note that all installations are done on virtual environment.
 2. Run the main.py which acts as a first stage user interface where the user will be prompted to select the type of application to run as shown below:
@@ -187,6 +190,30 @@ Hope I summarized the contents related to the applications and now we shall look
 4. If you are planning to run this project, ensure installing all packages as specified in requirements.txt.
 5. Streamlit is not supported in the latest python version 3.12.0 and anything less than this version encountered no problem.
 6. I used FAISS instead of ChromaDB as I could not install successfully in older versions of Python <12.0.
+
+# Part-2 Modified and Improved Version
+
+If we look at the older version, the user needs to input the desired application to operate with. There are two major shortcomings to this method.
+
+**Shortcomings of Older version implemented using main.py**
+
+1. Every time user needs to close the application and get back to the terminal to open a new application. This is not quite user friendly
+2. Also building like this does not ensure any streamline process and technically everytime we are opening different applications everytime.
+
+**Modified Version**
+
+So to avoid the above concern, I integrated all the working applications under a common app named **Common_App.py** which contains the functionality of all aforementioned 5 applications.
+
+**How to run this **Common_App.py**:
+
+Simply use the command **streamlit run Common_App.py** and the interactive window pops up. 
+
+<img width="941" alt="image" src="https://github.com/user-attachments/assets/29ccc77b-42e6-418d-a52d-d1da917073cd">
+
+
+# Working Demo:
+
+The working demo of the app is shared in the link: https://www.youtube.com/watch?v=5Eg8DE12RFM
 
 Please share feedback for further improbvement and this is my first time learning of this RAG and Langchain use cases.
 
