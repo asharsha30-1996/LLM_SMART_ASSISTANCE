@@ -54,47 +54,41 @@ LANGSMITH_API_KEY=os.getenv("LANGSMITH_API_KEY")
 if not all([OPENAI_API_KEY, SERPAPI_API_KEY, GOOGLE_API_KEY, CSE_ID,LANGSMITH_API_KEY]):
     st.error("Some API keys are missing. Please check your .env file.")
 
-# Set up SQLite connection for Personal Information
-conn = sqlite3.connect("personal_info.db")
-cursor = conn.cursor()
-cursor.execute("""
-    CREATE TABLE IF NOT EXISTS personal_info (
-        key TEXT PRIMARY KEY,
-        value TEXT
-    )
-""")
-conn.commit()
+# Initialize the OpenAI model
+llm = ChatOpenAI(openai_api_key=OPENAI_API_KEY, model="gpt-3.5-turbo")
 
-# Helper function to store and retrieve info from SQLite
-def store_info(key, value):
-    cursor.execute("INSERT OR REPLACE INTO personal_info (key, value) VALUES (?, ?)", (key, value))
-    conn.commit()
 
-def get_info(key):
-    cursor.execute("SELECT value FROM personal_info WHERE key = ?", (key,))
-    result = cursor.fetchone()
-    return result[0] if result else None
+# Set up Streamlit page configuration
+st.set_page_config(page_title="AI Assistant", layout="wide")
 
-# Helper function to query LLM using Ollama
-def query_llama(prompt):
-    try:
-        result = subprocess.run(
-            ["ollama", "run", "llama3.1:8b"],
-            input=prompt,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True
-        )
-        if result.returncode != 0:
-            return f"Error: {result.stderr.strip()}"
-        return result.stdout.strip()
-    except Exception as e:
-        return f"Exception occurred: {str(e)}"
+def identify_task(user_prompt):
+    # Define a prompt to classify the task
+    task_prompt = f"""
+    You are an assistant that classifies the user's intent based on the prompt.
+    Please identify the task from the following options: "email", "meeting", "pdf", "search", "info".
+    Respond with the task type only.
 
-# Streamlit UI setup
-st.set_page_config(page_title="Multi-Tool App", layout="wide")
-st.sidebar.title("Navigation")
-app_mode = st.sidebar.selectbox("Choose an application:", ["Email Sender", "Meeting Scheduler", "PDF Summarizer", "Internet Search", "Personal Information Manager"])
+    User prompt: "{user_prompt}"
+    Task:
+    """
+    
+    # Use the language model to classify the task
+    response = llm([HumanMessage(content=task_prompt)])
+    
+    # Extract the response from the language model
+    task = response.content.strip().lower()
+    
+    # Validate and return the identified task
+    if task in ["email", "meeting", "pdf", "search", "info"]:
+        return task
+    else:
+        return "unknown"
+
+# # Set up page configuration
+# st.set_page_config(page_title="AI Assistant", layout="wide")
+
+# st.sidebar.title("Navigation")
+# app_mode = st.sidebar.selectbox("Choose an application:", ["Email Sender", "Meeting Scheduler", "PDF Summarizer", "Internet Search", "Personal Information Manager"])
 
 # Email Sender function
 def email_sender():
@@ -579,31 +573,92 @@ def internet_search():
             run_user_query(user_question)
 
 # Personal Information Manager function
+
+
+
+# Personal Information Manager function
 def personal_info_manager():
-    st.title("Personal Information Manager")
+    st.title("Personal Information Manager with SQLite and Ollama")
+
+    # Section to store multiple personal attributes
     st.header("Store Personal Information")
-    
-    # Input fields for personal information
+    # SQLite connection and table setup for Personal Information
+    conn = sqlite3.connect("personal_info.db")
+    cursor = conn.cursor()
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS personal_info (
+        key TEXT PRIMARY KEY,
+        value TEXT
+    )
+""")
+    conn.commit()
+    conn = sqlite3.connect("personal_info.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS personal_info (
+        key TEXT PRIMARY KEY,
+        value TEXT
+    )
+""")
+    conn.commit()
+
+# Function to store information in SQLite
+    def store_info(key, value):
+        cursor.execute("INSERT OR REPLACE INTO personal_info (key, value) VALUES (?, ?)", (key, value))
+        conn.commit()
+
+    # Function to retrieve information from SQLite
+    def get_info(key):
+        cursor.execute("SELECT value FROM personal_info WHERE key = ?", (key,))
+        result = cursor.fetchone()
+        return result[0] if result else None
+
+    # Updated function to query the local LLM using Ollama
+    def query_llama(prompt):
+        try:
+            # Use subprocess to run Ollama and capture output
+            result = subprocess.run(
+                ["ollama", "run", "llama3.1:8b"],
+                input=prompt,  # Pass the prompt directly as a string
+                stdout=subprocess.PIPE,         # Capture standard output
+                stderr=subprocess.PIPE,         # Capture standard error
+                text=True                        # Ensure output is returned as text
+            )
+            if result.returncode != 0:
+                return f"Error: {result.stderr.strip()}"
+            return result.stdout.strip()
+        except Exception as e:
+            return f"Exception occurred: {str(e)}"
+
+        
+    # Streamlit UI layout
+    st.title("Personal Information Manager with SQLite and Ollama")
+
+    # Section to store multiple personal attributes
+    st.header("Store Personal Information")
     name = st.text_input("Enter your name")
     dob = st.date_input("Enter your date of birth")
     height = st.number_input("Enter your height (in cm)", min_value=0)
     weight = st.number_input("Enter your weight (in kg)", min_value=0)
-    hobby = st.text_input("Enter your hobby")
-    color = st.text_input("Enter your favorite color")
-    food = st.text_input("Enter your favorite food")
+    hobby=st.text_input("Enter your hobby")
+    color=st.text_input("Enter your favorite color")
+    food=st.text_input("Enter your favorite food")
 
-    # Store information in SQLite
+
     if st.button("Store Information"):
+        # Store all the information in SQLite
         store_info("name", name)
         store_info("date_of_birth", dob.strftime('%Y-%m-%d'))
         store_info("height", str(height))
         store_info("weight", str(weight))
         store_info("hobby", hobby)
         store_info("color", color)
-        store_info("food", food)
+        store_info("food",food)
+
         st.success("All information stored successfully!")
 
-    # Retrieve and display stored information
+    # Section to retrieve and display personal information
     st.header("Retrieve Personal Information")
     if st.button("Show My Information"):
         retrieved_data = {
@@ -611,33 +666,70 @@ def personal_info_manager():
             "Date of Birth": get_info("date_of_birth"),
             "Height (cm)": get_info("height"),
             "Weight (kg)": get_info("weight"),
-            "Favorite Color": get_info("color"),
-            "Hobby": get_info("hobby"),
-            "Favorite Food": get_info("food")
+            "Color":get_info("color"),
+            "Hobby":get_info("hobby"),
+            "Food":get_info("food")
         }
         for key, value in retrieved_data.items():
             if value:
                 st.write(f"**{key}:** {value}")
 
-    # Query LLM with personal data
+    # Section to query the LLM using stored data
     st.header("Ask the LLM a Question")
     llm_prompt = st.text_area("Ask the LLM a question using your personal data")
+
+
+
+
     if st.button("Ask LLM"):
+        # Construct a prompt using the stored information
         prompt = f"My name is {get_info('name')}. I was born on {get_info('date_of_birth')}. " \
-                 f"My favorite color is {get_info('color')}, and I love {get_info('food')}. " \
-                 f"I am {get_info('height')} cm tall and weigh {get_info('weight')} kg. " \
-                 f"In my free time, I enjoy {get_info('hobby')}. {llm_prompt}"
+                f"My favorite color is {get_info('color')}, and I love {get_info('food')}. " \
+                f"I am {get_info('height')} cm tall and weigh {get_info('weight')} kg. " \
+                f"In my free time, I enjoy {get_info('hobby')}. {llm_prompt}"
+
+        # Query the LLM and display the response
         response = query_llama(prompt)
         st.write(f"LLM Response: {response}")
 
-# Render the selected application
-if app_mode == "Email Sender":
-    email_sender()
-elif app_mode == "Meeting Scheduler":
-    meeting_scheduler()
-elif app_mode == "PDF Summarizer":
-    pdf_summarizer()
-elif app_mode == "Internet Search":
-    internet_search()
-elif app_mode == "Personal Information Manager":
-    personal_info_manager()
+# # Render the selected application
+# if app_mode == "Email Sender":
+#     email_sender()
+# elif app_mode == "Meeting Scheduler":
+#     meeting_scheduler()
+# elif app_mode == "PDF Summarizer":
+#     pdf_summarizer()
+# elif app_mode == "Internet Search":
+#     internet_search()
+# elif app_mode == "Personal Information Manager":
+#     personal_info_manager()
+# Process prompt and call respective function
+def process_prompt(user_prompt):
+    task = identify_task(user_prompt)
+
+    if task == "email":
+            email_sender()
+            #st.write(response)
+
+    elif task == "meeting":
+            meeting_scheduler()
+            
+
+    elif task == "pdf":
+            pdf_summarizer()
+
+    elif task == "search":
+        internet_search()
+
+    elif task == "info":
+            personal_info_manager()
+
+
+    else:
+        st.write("Sorry, I couldn't identify the requested task.")
+
+# Main Streamlit interface
+st.title("AI Assistant")
+user_prompt = st.text_input("Enter your command (e.g., send an email, schedule a meeting, summarize PDF, search, manage info):")
+if user_prompt:
+    process_prompt(user_prompt)
