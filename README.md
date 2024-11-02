@@ -173,9 +173,10 @@ This is more like making use of local LLMs like ollama to store and retrieve per
 
 Below is the sample screenshot of the output. Also the local model took longer time to run and my system is fronzen for 15 minutes.
 
-<img width="274" alt="image" src="https://github.com/user-attachments/assets/f7f29081-3bda-47d1-933f-3e8542628f14">
-<img width="323" alt="image" src="https://github.com/user-attachments/assets/acafecdc-0c42-4856-b611-c01ed17c152d">
-<img width="368" alt="image" src="https://github.com/user-attachments/assets/ff62421e-c8cd-4d42-b1aa-afacf62010fd">
+<img width="419" alt="image" src="https://github.com/user-attachments/assets/c1bd8d3d-f3de-409b-943d-38fcb7726c74">
+<img width="277" alt="image" src="https://github.com/user-attachments/assets/66e5e85c-3be5-426f-904b-38898e9a4a6a">
+
+
 
 Hope I summarized the contents related to the applications and now we shall look at the steps to execute the same
 
