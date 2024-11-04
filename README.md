@@ -165,7 +165,7 @@ On my Gmail:
 
 **Note: We never exposed the tokens to openAI we used openAI only for prompting.**
 
-**Note:** The recepient details are stored as contact.json file and is contained in local
+**Note:** The recepient details are stored as contact.json file and is contained in local. It is upto the user to fill in the required details of the recepient.
 
 # 5.Deploying a local LLM to store private information for future retrieval.
 
@@ -201,9 +201,11 @@ If we look at the older version, the user needs to input the desired application
 1. Every time user needs to close the application and get back to the terminal to open a new application. This is not quite user friendly
 2. Also building like this does not ensure any streamline process and technically everytime we are opening different applications everytime.
 
-**Modified Version**
+**Modified Version - 1**
 
 So to avoid the above concern, I integrated all the working applications under a common app named **Common_App.py** which contains the functionality of all aforementioned 5 applications.
+
+
 
 **How to run this **Common_App.py**:
 
@@ -212,9 +214,19 @@ Simply use the command **streamlit run Common_App.py** and the interactive windo
 <img width="941" alt="image" src="https://github.com/user-attachments/assets/29ccc77b-42e6-418d-a52d-d1da917073cd">
 
 
+**Modified Version - 2**
+
+Instead of drop down selection, implemented a simple UI wherein the user can type in any related functionalities (email,internet etc) through natural language prompting the appropriate functionlity will be executed.
+
+<img width="920" alt="image" src="https://github.com/user-attachments/assets/3bd69646-9e1b-4944-ba0c-a8452c4704d5">
+
+
+
 # Working Demo:
 
-The working demo of the app is shared in the link: https://www.youtube.com/watch?v=5Eg8DE12RFM
+The working demo of the app is shared in the link: https://www.youtube.com/watch?v=5Eg8DE12RFM - -Long video as per the Modified Version -1
+
+Alternatively for short demo, please refer to this video: https://www.youtube.com/watch?v=kfFnzpz7xGc - Video as per the Modified Version -2
 
 Please share feedback for further improbvement and this is my first time learning of this RAG and Langchain use cases.
 
